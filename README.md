@@ -40,8 +40,8 @@ In the above diagram, you can see the components and their relations.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 5.19.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.11.0 |
 | <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 1.12.0 |
 
@@ -66,18 +66,18 @@ In the above diagram, you can see the components and their relations.
 
 | Name | Type |
 |------|------|
-| [aws_iam_policy.vector_agent](https://registry.terraform.io/providers/hashicorp/aws/5.19.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.vector_aggregator](https://registry.terraform.io/providers/hashicorp/aws/5.19.0/docs/resources/iam_policy) | resource |
-| [aws_s3_bucket_notification.object_created](https://registry.terraform.io/providers/hashicorp/aws/5.19.0/docs/resources/s3_bucket_notification) | resource |
+| [aws_iam_policy.vector_agent](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.vector_aggregator](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
+| [aws_s3_bucket_notification.object_created](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_notification) | resource |
 | [helm_release.vector_agent](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.vector_aggregator](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [aws_eks_cluster.eks](https://registry.terraform.io/providers/hashicorp/aws/5.19.0/docs/data-sources/eks_cluster) | data source |
-| [aws_iam_policy_document.s3_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/5.19.0/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.vector_agent](https://registry.terraform.io/providers/hashicorp/aws/5.19.0/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.vector_aggregator](https://registry.terraform.io/providers/hashicorp/aws/5.19.0/docs/data-sources/iam_policy_document) | data source |
-| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/5.19.0/docs/data-sources/region) | data source |
-| [aws_secretsmanager_secret.opensearch_credentials](https://registry.terraform.io/providers/hashicorp/aws/5.19.0/docs/data-sources/secretsmanager_secret) | data source |
-| [aws_secretsmanager_secret_version.current](https://registry.terraform.io/providers/hashicorp/aws/5.19.0/docs/data-sources/secretsmanager_secret_version) | data source |
+| [aws_eks_cluster.eks](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster) | data source |
+| [aws_iam_policy_document.s3_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.vector_agent](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.vector_aggregator](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
+| [aws_secretsmanager_secret.opensearch_credentials](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret) | data source |
+| [aws_secretsmanager_secret_version.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version) | data source |
 | [utils_deep_merge_yaml.values_agent_merged](https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml) | data source |
 | [utils_deep_merge_yaml.values_aggregator_merged](https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml) | data source |
 
