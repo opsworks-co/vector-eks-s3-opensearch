@@ -8,7 +8,7 @@ locals {
   default_helm_chart_config = {
     chart            = "vector"
     repository       = "https://helm.vector.dev"
-    version          = "0.29.1"
+    version          = "0.30.0"
     namespace        = "vector"
     create_namespace = true
   }
