@@ -25,7 +25,7 @@ data "aws_iam_policy_document" "s3_bucket_policy" {
 
 module "vector_s3_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "3.15.1"
+  version = "4.0.1"
 
   bucket        = local.bucket_name
   acl           = null

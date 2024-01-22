@@ -1,11 +1,11 @@
 locals {
-  es_endpoint      = "https://aos-some-endpoint.us-east-1.es.amazonaws.com:443"
+  es_endpoint      = "https://vpc-xxx-abcdef.us-east-1.es.amazonaws.com:443"
   eks_cluster_name = "test-eks"
   secret_name      = "test/vector/${local.eks_cluster_name}"
 }
 
 module "vector" {
-  source = "../"
+  source = "../../"
 
   name                         = "vector"
   eks_cluster_name             = local.eks_cluster_name

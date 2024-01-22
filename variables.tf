@@ -29,7 +29,7 @@ variable "aggregator_template_filename" {
 variable "aggregator_template_variables" {
   type        = map(string)
   default     = {}
-  description = "By default aggregator template has following variables: `queue_url`, `user`, `password`, `endpoint`, `region`, and `eks_cluster_name`. Module replaces them inside automatically. If you defined additional variables in the template provided via `aggregator_template_filename` you need to provide values for them here."
+  description = "By default aggregator template has following variables: `queue_url`, `endpoint`, `region`, and `eks_cluster_name`. Module replaces them inside automatically. If you defined additional variables in the template provided via `aggregator_template_filename` you need to provide values for them here."
 }
 
 variable "agent_template_filename" {

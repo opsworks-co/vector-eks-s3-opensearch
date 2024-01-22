@@ -13,7 +13,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_vector"></a> [vector](#module\_vector) | ../ | n/a |
+| <a name="module_vector"></a> [vector](#module\_vector) | ../../ | n/a |
 
 ## Resources
 
@@ -41,7 +41,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_vector"></a> [vector](#module\_vector) | ../ | n/a |
+| <a name="module_vector"></a> [vector](#module\_vector) | ../../ | n/a |
 
 ## Resources
 

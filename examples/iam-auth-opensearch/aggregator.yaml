@@ -40,10 +40,7 @@ customConfig:
         - de_dots
       route:
         ingress_nginx: .kubernetes.pod_labels."app.kubernetes.io/name" == "ingress-nginx" || .kubernetes.pod_labels."app_kubernetes_io/name" == "ingress-nginx"
-        nginx_access: .kubernetes.pod_labels.logs == "nginx"
         php_fpm: .kubernetes.pod_labels.logs == "php-fpm"
-        socket_server: .kubernetes.pod_labels."app.kubernetes.io/name" == "frontend-socketserver" || .kubernetes.pod_labels."app.kubernetes.io/name" == "device-socketserver" || .kubernetes.pod_labels."app_kubernetes_io/name" == "frontend-socketserver" || .kubernetes.pod_labels."app_kubernetes_io/name" == "device-socketserver"
-        uppy: .kubernetes.pod_labels."app.kubernetes.io/name" == "uppy-companion" || .kubernetes.pod_labels."app_kubernetes_io/name" == "uppy-companion"
 
 ################# <REMAP> #####################
     remap_ingress_nginx:
@@ -57,85 +54,6 @@ customConfig:
 
         message = parse_json(.message) ?? {}
         . = merge!(., message)
-
-        body_bytes_sent, err = to_int(.body_bytes_sent)
-        if err == null {
-          .body_bytes_sent = body_bytes_sent
-        } else {
-          .body_bytes_sent = 0
-        }
-        bytes_sent, err = to_int(.bytes_sent)
-        if err == null {
-          .bytes_sent = bytes_sent
-        } else {
-          .bytes_sent = 0
-        }
-        request_length, err = to_int(.request_length)
-        if err == null {
-          .request_length = request_length
-        } else {
-          .request_length = 0
-        }
-        request_time, err = to_float(.request_time)
-        if err == null {
-          .request_time = request_time
-        } else {
-          .request_time = 0.0
-        }
-        status, err = to_int(.status)
-        if err == null {
-          .status = status
-        } else {
-          .status = 0
-        }
-        upstream_bytes_received, err = to_int(.upstream_bytes_received)
-        if err == null {
-          .upstream_bytes_received = upstream_bytes_received
-        } else {
-          .upstream_bytes_received = 0
-        }
-        upstream_connect_time, err = to_float(.upstream_connect_time)
-        if err == null {
-          .upstream_connect_time = upstream_connect_time
-        } else {
-          .upstream_connect_time = 0.0
-        }
-        upstream_header_time, err = to_float(.upstream_header_time)
-        if err == null {
-          .upstream_header_time = upstream_header_time
-        } else {
-          .upstream_header_time = 0.0
-        }
-        upstream_response_time, err = to_float(.upstream_response_time)
-        if err == null {
-          .upstream_response_time = upstream_response_time
-        } else {
-          .upstream_response_time = 0.0
-        }
-        upstream_status, err = to_int(.upstream_status)
-        if err == null {
-          .upstream_status = upstream_status
-        } else {
-          .upstream_status = 0
-        }
-
-        if exists(.request) { del(.message) }
-
-    remap_nginx_access:
-      type: remap
-      inputs:
-        - route_k8s_logs.nginx_access
-      source: |
-        .index_name = "nginx-access"
-
-        ."@timestamp" = del(.timestamp)
-
-        message = parse_json(.message) ?? {}
-        . = merge!(., message)
-
-        if (is_empty(to_string(.user_agent) ?? "") == false) {
-          . |= parse_regex!(.user_agent, r'^(?P<device_type>[A-z]+).(?P<device_version>\d+.\d+.\d+)(.|.*)(?P<device_id>.*)')
-        }
 
         body_bytes_sent, err = to_int(.body_bytes_sent)
         if err == null {
@@ -214,22 +132,6 @@ customConfig:
         }
         ."@timestamp" = del(.timestamp)
 
-    remap_socket_server:
-      type: remap
-      inputs:
-        - route_k8s_logs.socket_server
-      source: |
-        ."@timestamp" = del(.timestamp)
-        .index_name = "socket_server"
-
-    remap_uppy:
-      type: remap
-      inputs:
-        - route_k8s_logs.uppy
-      source: |
-        ."@timestamp" = del(.timestamp)
-        .index_name = "uppy"
-
     remap_unmatched:
       type: remap
       inputs:
@@ -247,18 +149,11 @@ customConfig:
       type: elasticsearch
       api_version: v8
       inputs:
-        - remap_php
         - remap_ingress_nginx
-        - remap_nginx_access
-        - remap_socket_server
-        - remap_uppy
+        - remap_php
         - remap_unmatched
       endpoints:
         - ${endpoint}
-      auth:
-        user: "${user}"
-        password: "${password}"
-        strategy: "basic"
       compression: gzip
       batch:
         max_bytes: 200000
