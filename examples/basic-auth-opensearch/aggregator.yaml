@@ -1,0 +1,179 @@
+customConfig:
+  data_dir: /vector-data-dir
+  api:
+    enabled: true
+    address: 127.0.0.1:8686
+    playground: false
+
+  sources:
+    s3_k8s_logs:
+      type: aws_s3
+      compression: gzip
+      region: ${region}
+      strategy: sqs
+      sqs:
+        delete_message: true
+        poll_secs: 15
+        queue_url: "${queue_url}"
+        visibility_timeout_secs: 300
+
+  transforms:
+    initial_transform:
+      type: remap
+      inputs:
+        - s3_k8s_logs
+      source: |
+        . = parse_json!(.message)
+        .eks_cluster_name = "${eks_cluster_name}"
+        .custom_field = "${custom_field_data}"
+
+    de_dots:
+      type: remap
+      inputs:
+        - initial_transform
+      source: |
+        . = map_keys(., recursive: true) -> |key| { replace(key, ".", "_") }
+
+    route_k8s_logs:
+      type: route
+      inputs:
+        - de_dots
+      route:
+        ingress_nginx: .kubernetes.pod_labels."app.kubernetes.io/name" == "ingress-nginx" || .kubernetes.pod_labels."app_kubernetes_io/name" == "ingress-nginx"
+        php_fpm: .kubernetes.pod_labels.logs == "php-fpm"
+
+################# <REMAP> #####################
+    remap_ingress_nginx:
+      type: remap
+      inputs:
+        - route_k8s_logs.ingress_nginx
+      source: |
+        .index_name = "ingress-nginx"
+
+        ."@timestamp" = del(.timestamp)
+
+        message = parse_json(.message) ?? {}
+        . = merge!(., message)
+
+        body_bytes_sent, err = to_int(.body_bytes_sent)
+        if err == null {
+          .body_bytes_sent = body_bytes_sent
+        } else {
+          .body_bytes_sent = 0
+        }
+        bytes_sent, err = to_int(.bytes_sent)
+        if err == null {
+          .bytes_sent = bytes_sent
+        } else {
+          .bytes_sent = 0
+        }
+        request_length, err = to_int(.request_length)
+        if err == null {
+          .request_length = request_length
+        } else {
+          .request_length = 0
+        }
+        request_time, err = to_float(.request_time)
+        if err == null {
+          .request_time = request_time
+        } else {
+          .request_time = 0.0
+        }
+        status, err = to_int(.status)
+        if err == null {
+          .status = status
+        } else {
+          .status = 0
+        }
+        upstream_bytes_received, err = to_int(.upstream_bytes_received)
+        if err == null {
+          .upstream_bytes_received = upstream_bytes_received
+        } else {
+          .upstream_bytes_received = 0
+        }
+        upstream_connect_time, err = to_float(.upstream_connect_time)
+        if err == null {
+          .upstream_connect_time = upstream_connect_time
+        } else {
+          .upstream_connect_time = 0.0
+        }
+        upstream_header_time, err = to_float(.upstream_header_time)
+        if err == null {
+          .upstream_header_time = upstream_header_time
+        } else {
+          .upstream_header_time = 0.0
+        }
+        upstream_response_time, err = to_float(.upstream_response_time)
+        if err == null {
+          .upstream_response_time = upstream_response_time
+        } else {
+          .upstream_response_time = 0.0
+        }
+        upstream_status, err = to_int(.upstream_status)
+        if err == null {
+          .upstream_status = upstream_status
+        } else {
+          .upstream_status = 0
+        }
+
+        if exists(.request) { del(.message) }
+
+    remap_php:
+      type: remap
+      inputs:
+        - route_k8s_logs.php_fpm
+      source: |
+        .index_name = "php-fpm"
+
+        .message = to_string(.message) ?? ""
+        if contains(.message, "[object]") {
+            . |= parse_regex!(.message, r'(?m)^\[(?P<php_timestamp>\d+-\d+-\d+ \d+:\d+:\d+)\] (?P<environment>\w+).(?P<severity>\w+): (?P<error_message>.*) \{"\w+":(?P<userid>\d+),"\w+":"(?P<exception>.*)')
+            .userid = to_int!(.userid)
+        }
+        ."@timestamp" = del(.timestamp)
+
+    remap_unmatched:
+      type: remap
+      inputs:
+        - route_k8s_logs._unmatched
+      source: |
+        ."@timestamp" = del(.timestamp)
+        .index_name = "unmatched"
+
+################# </REMAP> #####################
+
+################# <SINKS> #####################
+
+  sinks:
+    opensearch:
+      type: elasticsearch
+      api_version: v8
+      inputs:
+        - remap_php
+        - remap_ingress_nginx
+        - remap_nginx_access
+        - remap_socket_server
+        - remap_uppy
+        - remap_unmatched
+      endpoints:
+        - ${endpoint}
+      compression: gzip
+      batch:
+        max_bytes: 200000
+      distribution:
+        retry_max_duration_secs: 300
+      mode: "bulk"
+      bulk:
+        action: "create"
+#https://github.com/vectordotdev/helm-charts/tree/develop/charts/vector#using-template-syntax-in-customconfig
+        index: |-
+          {{ print "vector-{{ .index_name }}-%Y.%m.%d" }}
+      encoding:
+        except_fields: ["index_name"]
+      healthcheck: false
+      tls:
+        verify_hostname: true
+      acknowledgements:
+        enabled: true
+
+################# </SINKS> #####################

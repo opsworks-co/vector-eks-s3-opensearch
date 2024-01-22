@@ -13,8 +13,6 @@ data "aws_secretsmanager_secret_version" "current" {
 locals {
   default_aggregator_template_variables = {
     queue_url        = module.vector_sqs.queue_id,
-    user             = try(jsondecode(data.aws_secretsmanager_secret_version.current[0].secret_string)["vector_username"], ""),
-    password         = try(jsondecode(data.aws_secretsmanager_secret_version.current[0].secret_string)["vector_password"], ""),
     endpoint         = var.elasticsearch_endpoint,
     region           = data.aws_region.current.name,
     eks_cluster_name = var.eks_cluster_name
@@ -29,6 +27,16 @@ locals {
       }
     }
   }
+
+  basic_settings = [
+    { name = "customConfig.sinks.opensearch.auth.strategy", value = "basic" },
+    { name = "customConfig.sinks.opensearch.auth.user", value = try(jsondecode(data.aws_secretsmanager_secret_version.current[0].secret_string)["vector_username"], "") }
+  ]
+  basic_sensitive = [
+    { name = "customConfig.sinks.opensearch.auth.password", value = try(jsondecode(data.aws_secretsmanager_secret_version.current[0].secret_string)["vector_password"], "") }
+  ]
+  basic_auth_settings  = var.secret_name == null ? [] : local.basic_settings
+  basic_auth_sensitive = var.secret_name == null ? [] : local.basic_sensitive
 }
 
 data "utils_deep_merge_yaml" "values_aggregator_merged" {
@@ -48,6 +56,24 @@ resource "helm_release" "vector_aggregator" {
   create_namespace = local.helm_chart_config.create_namespace
 
   values = [data.utils_deep_merge_yaml.values_aggregator_merged.output]
+
+  dynamic "set" {
+    for_each = local.basic_auth_settings
+    iterator = item
+    content {
+      name  = item.value.name
+      value = item.value.value
+    }
+  }
+
+  dynamic "set_sensitive" {
+    for_each = local.basic_auth_sensitive
+    iterator = item
+    content {
+      name  = item.value.name
+      value = item.value.value
+    }
+  }
 }
 
 data "aws_iam_policy_document" "vector_aggregator" {
