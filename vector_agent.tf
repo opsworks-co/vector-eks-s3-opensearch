@@ -116,7 +116,7 @@ resource "aws_iam_policy" "vector_agent" {
 
 module "vector_agent_role" {
   source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version                       = "v5.33.0"
+  version                       = "v5.34.0"
   create_role                   = true
   allow_self_assume_role        = false
   role_description              = "Vector Agent IRSA"
