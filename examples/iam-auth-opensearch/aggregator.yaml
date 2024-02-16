@@ -13,6 +13,7 @@ customConfig:
       strategy: sqs
       sqs:
         delete_message: true
+        delete_failed_message: true
         poll_secs: 15
         queue_url: "${queue_url}"
         visibility_timeout_secs: 300
