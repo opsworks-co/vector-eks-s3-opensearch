@@ -44,9 +44,9 @@ In the above diagram, you can see the components and their relations.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.37.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.38.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.12.1 |
-| <a name="provider_utils"></a> [utils](#provider\_utils) | 1.17.0 |
+| <a name="provider_utils"></a> [utils](#provider\_utils) | 1.18.0 |
 
 ## Modules
 
@@ -104,4 +104,5 @@ In the above diagram, you can see the components and their relations.
 | <a name="output_vector_agent_role"></a> [vector\_agent\_role](#output\_vector\_agent\_role) | IAM Role ARN created for Vector agent |
 | <a name="output_vector_aggregator_role"></a> [vector\_aggregator\_role](#output\_vector\_aggregator\_role) | IAM Role ARN created for Vector aggregator |
 | <a name="output_vector_s3_bucket_id"></a> [vector\_s3\_bucket\_id](#output\_vector\_s3\_bucket\_id) | S3 bucket created to store logs before they parsed |
+| <a name="output_vector_sqs_name"></a> [vector\_sqs\_name](#output\_vector\_sqs\_name) | SQS created to collect events from S3 and pass to vector aggregator |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
