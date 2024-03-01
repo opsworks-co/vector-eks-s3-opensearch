@@ -95,7 +95,6 @@ In the above diagram, you can see the components and their relations.
 | <a name="input_s3_expiration_days"></a> [s3\_expiration\_days](#input\_s3\_expiration\_days) | How many days keep log files in S3 bucket. | `number` | `7` | no |
 | <a name="input_s3_force_destroy"></a> [s3\_force\_destroy](#input\_s3\_force\_destroy) | A boolean that indicates all objects should be deleted from the bucket first to destroy the bucket without error. | `bool` | `false` | no |
 | <a name="input_secret_name"></a> [secret\_name](#input\_secret\_name) | Secret which contains `vector_username` and `vector_password` we are using to perform Basic Authenification in OpenSearch (ElasticSearch). | `string` | `null` | no |
-| <a name="input_sqs_name"></a> [sqs\_name](#input\_sqs\_name) | By default SQS name generates as `$var.name-$var.eks_cluster_name`. You can override it here by providing custom name. | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A mapping of tags to assign to the resources. | `map(string)` | `{}` | no |
 
 ## Outputs
@@ -105,4 +104,5 @@ In the above diagram, you can see the components and their relations.
 | <a name="output_vector_agent_role"></a> [vector\_agent\_role](#output\_vector\_agent\_role) | IAM Role ARN created for Vector agent |
 | <a name="output_vector_aggregator_role"></a> [vector\_aggregator\_role](#output\_vector\_aggregator\_role) | IAM Role ARN created for Vector aggregator |
 | <a name="output_vector_s3_bucket_id"></a> [vector\_s3\_bucket\_id](#output\_vector\_s3\_bucket\_id) | S3 bucket created to store logs before they parsed |
+| <a name="output_vector_sqs_name"></a> [vector\_sqs\_name](#output\_vector\_sqs\_name) | SQS created to collect events from S3 and pass to vector aggregator |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
