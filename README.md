@@ -44,9 +44,9 @@ In the above diagram, you can see the components and their relations.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.37.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.38.0 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | 2.12.1 |
-| <a name="provider_utils"></a> [utils](#provider\_utils) | 1.17.0 |
+| <a name="provider_utils"></a> [utils](#provider\_utils) | 1.18.0 |
 
 ## Modules
 
@@ -95,6 +95,7 @@ In the above diagram, you can see the components and their relations.
 | <a name="input_s3_expiration_days"></a> [s3\_expiration\_days](#input\_s3\_expiration\_days) | How many days keep log files in S3 bucket. | `number` | `7` | no |
 | <a name="input_s3_force_destroy"></a> [s3\_force\_destroy](#input\_s3\_force\_destroy) | A boolean that indicates all objects should be deleted from the bucket first to destroy the bucket without error. | `bool` | `false` | no |
 | <a name="input_secret_name"></a> [secret\_name](#input\_secret\_name) | Secret which contains `vector_username` and `vector_password` we are using to perform Basic Authenification in OpenSearch (ElasticSearch). | `string` | `null` | no |
+| <a name="input_sqs_name"></a> [sqs\_name](#input\_sqs\_name) | By default SQS name generates as `$var.name-$var.eks_cluster_name`. You can override it here by providing custom name. | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A mapping of tags to assign to the resources. | `map(string)` | `{}` | no |
 
 ## Outputs

@@ -91,3 +91,9 @@ variable "s3_bucket_name" {
   default     = null
   description = "By default S3 bucket name generates as `$var.name-$var.eks_cluster_name-logs`. You can override it here by providing custom name."
 }
+
+variable "sqs_name" {
+  type        = string
+  default     = null
+  description = "By default SQS name generates as `$var.name-$var.eks_cluster_name`. You can override it here by providing custom name."
+}

@@ -1,5 +1,5 @@
 locals {
-  sqs_name = lower("${var.name}-${var.eks_cluster_name}")
+  sqs_name = coalesce(var.sqs_name, lower("${var.name}-${var.eks_cluster_name}"))
 }
 
 module "vector_sqs" {
