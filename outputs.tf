@@ -12,3 +12,8 @@ output "vector_aggregator_role" {
   description = "IAM Role ARN created for Vector aggregator"
   value       = module.vector_aggregator_role.iam_role_arn
 }
+
+output "vector_sqs_name" {
+  description = "SQS created to collect events from S3 and pass to vector aggregator"
+  value       = module.vector_sqs.queue_name
+}
