@@ -110,7 +110,7 @@ resource "aws_iam_policy" "vector_aggregator" {
 
 module "vector_aggregator_role" {
   source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version                       = "v5.34.0"
+  version                       = "v5.38.0"
   create_role                   = true
   allow_self_assume_role        = false
   role_description              = "Vector Aggregator IRSA"
