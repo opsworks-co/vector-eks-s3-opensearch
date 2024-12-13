@@ -44,9 +44,9 @@ In the above diagram, you can see the components and their relations.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.44.0 |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | 2.13.0 |
-| <a name="provider_utils"></a> [utils](#provider\_utils) | 1.19.2 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.81.0 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | 2.16.1 |
+| <a name="provider_utils"></a> [utils](#provider\_utils) | 1.27.0 |
 
 ## Modules
 
