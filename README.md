@@ -8,6 +8,7 @@ This module was created to simplify configuring logging collecting and aggregati
   <img src="https://raw.githubusercontent.com/opsworks-co/vector-eks-s3-opensearch/master/.github/images/diagram.svg" alt="Architectural diagram" width="100%">
 </p>
 
+
 In the above diagram, you can see the components and their relations.
 
 ##### Resources you need to provide (pre-requisitions)
