@@ -1,5 +1,7 @@
 # Documentation
 
+# This repository is discontinued, further work at https://github.com/Perun-Engineering/vector-eks-s3-opensearch
+
 ## Description and Architecture
 
 This module was created to simplify configuring logging collecting and aggregation using [Vector](https://github.com/vectordotdev/vector) with intermediate cache in AWS S3 and final destination in AWS OpenSearch (former ElasticSearch).
